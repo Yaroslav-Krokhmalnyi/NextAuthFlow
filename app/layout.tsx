@@ -23,21 +23,30 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'NoteHub',
-  description: 'A simple notes application built with Next.js',
+  title: 'NextAuthFlow',
+  description:
+    'Authentication system built with Next.js App Router. Full auth flow with protected routes, Zustand and TanStack Query.',
   openGraph: {
-    title: 'NoteHub',
-    description: 'A simple notes application built with Next.js',
-    url: 'https://08-zustand-drab-kappa.vercel.app',
+    title: 'NextAuthFlow',
+    description:
+      'Authentication system built with Next.js App Router. Full auth flow with protected routes, Zustand and TanStack Query.',
+    url: 'https://next-auth-flow-zeta.vercel.app',
     images: [
       {
-        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        url: '/og.png',
         width: 1200,
         height: 630,
-        alt: 'NoteHub — a simple web-based note-taking application built with Next.js',
+        alt: 'NextAuthFlow - authentication flow built with Next.js App Router',
       },
     ],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NextAuthFlow',
+    description:
+      'Authentication system built with Next.js App Router. Full auth flow with protected routes, Zustand and TanStack Query.',
+    images: ['/og.png'],
   },
 };
 
