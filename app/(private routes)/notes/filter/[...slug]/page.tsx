@@ -2,44 +2,48 @@
 import { Metadata } from 'next';
 
 // Constants
-import TAGS from "@/constants/noteTags";
+import TAGS from '@/constants/noteTags';
 
 // Next.js
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
 
 // Components
-import NotesPageClient from "./Notes.client";
+import NotesPageClient from './Notes.client';
 
 // Types
-import type { NoteTag } from "@/types/note";
+import type { NoteTag } from '@/types/note';
 
-interface NotesByCategoryProps {
-  slug: string[];
-}
+type NotesByCategoryProps = {
+  params: Promise<{
+    slug: string[];
+  }>;
+};
 
-export async function generateMetadata(
-  { params }: { params: Promise<NotesByCategoryProps> }
-): Promise<Metadata> {
+const BASE_URL = 'https://next-auth-flow-zeta.vercel.app';
+
+export async function generateMetadata({
+  params,
+}: NotesByCategoryProps): Promise<Metadata> {
   const { slug } = await params;
-  const [filter] = slug;
+  const filter = slug?.[0] ?? 'all';
 
-  if (filter === "all") {
+  if (filter === 'all') {
     return {
-      title: "All notes",
-      description: "All notes in NoteHub",
+      title: 'All notes',
+      description: 'All notes available in the demo notes section.',
       openGraph: {
-        title: "All notes",
-        description: "All notes in NoteHub",
-        url: "https://08-zustand-drab-kappa.vercel.app/notes/filter/all",
+        title: 'All notes',
+        description: 'All notes available in the demo notes section.',
+        url: `${BASE_URL}/notes/filter/all`,
         images: [
           {
-            url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+            url: '/og.png',
             width: 1200,
             height: 630,
-            alt: "NoteHub — a simple web-based note-taking application built with Next.js",
+            alt: 'NextAuthFlow — demo notes section',
           },
         ],
-        type: "website",
+        type: 'website',
       },
     };
   }
@@ -47,42 +51,37 @@ export async function generateMetadata(
   if (TAGS.includes(filter as NoteTag)) {
     return {
       title: `Notes: ${filter}`,
-      description: `Notes filtered by ${filter}`,
+      description: `Notes filtered by "${filter}".`,
       openGraph: {
         title: `Notes: ${filter}`,
-        description: `Notes filtered by ${filter}`,
-        url: `https://08-zustand-drab-kappa.vercel.app/notes/filter/${filter}`,
+        description: `Notes filtered by "${filter}".`,
+        url: `${BASE_URL}/notes/filter/${filter}`,
         images: [
           {
-            url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+            url: '/og.png',
             width: 1200,
             height: 630,
-            alt: "NoteHub — a simple web-based note-taking application built with Next.js",
+            alt: 'NextAuthFlow — demo notes section',
           },
         ],
-        type: "website",
+        type: 'website',
       },
     };
   }
 
-  return {
-    title: "Notes",
-  };
+  return { title: 'Notes' };
 }
 
-const NotesByCategory = async ({
+export default async function NotesByCategory({
   params,
-}: {
-  params: Promise<NotesByCategoryProps>;
-}) => {
+}: NotesByCategoryProps) {
   const { slug } = await params;
-  const filter = slug[0];
+  const filter = slug?.[0] ?? 'all';
 
-  function isNoteTag(value: string): value is NoteTag {
-    return TAGS.includes(value as NoteTag);
-  }
+  const isNoteTag = (value: string): value is NoteTag =>
+    TAGS.includes(value as NoteTag);
 
-  if (filter === "all") {
+  if (filter === 'all') {
     return <NotesPageClient />;
   }
 
@@ -91,6 +90,4 @@ const NotesByCategory = async ({
   }
 
   notFound();
-};
-
-export default NotesByCategory;
+}

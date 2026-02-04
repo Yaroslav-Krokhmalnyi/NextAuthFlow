@@ -14,7 +14,7 @@ export default function NoteDetailsClient() {
   const {
     data: note,
     isLoading,
-    error,
+    isError,
   } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
@@ -22,11 +22,15 @@ export default function NoteDetailsClient() {
   });
 
   if (isLoading) {
-    return <p>Loading, please wait...</p>;
+    return (
+      <p role='status' aria-live='polite'>
+        Loading note…
+      </p>
+    );
   }
 
-  if (error || !note) {
-    return <p>Something went wrong.</p>;
+  if (isError || !note) {
+    return <p role='alert'>Could not load note.</p>;
   }
 
   const formattedDate = note.updatedAt
@@ -38,7 +42,7 @@ export default function NoteDetailsClient() {
       <div className={css.container}>
         <div className={css.item}>
           <div className={css.header}>
-            <h2>{note.title}</h2>
+            <h1>{note.title}</h1>
             <p className={css.tag}>{note.tag}</p>
           </div>
           <p className={css.content}>{note.content}</p>

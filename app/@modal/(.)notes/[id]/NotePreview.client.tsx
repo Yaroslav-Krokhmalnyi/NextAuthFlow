@@ -14,11 +14,6 @@ import { fetchNoteById } from '@/lib/api/clientApi';
 //Components
 import Modal from '@/components/Modal/Modal';
 
-// Types
-type ErrorProps = {
-  error: Error;
-};
-
 const NotePreviewClient = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -34,14 +29,21 @@ const NotePreviewClient = () => {
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
+  if (isLoading) {
+    return (
+      <p role='status' aria-live='polite'>
+        Loading note…
+      </p>
+    );
+  }
+
   if (error instanceof Error || !note) {
-    return <p>Something went wrong.</p>;
+    return <p role='alert'>Could not load note.</p>;
   }
 
   const formattedDate = note.updatedAt
     ? `Updated at: ${new Date(note.updatedAt).toLocaleDateString('uk-UA')}`
-    : `Created at: ${new Date(note.createdAt).toLocaleDateString('uk-UA')}}`;
+    : `Created at: ${new Date(note.createdAt).toLocaleDateString('uk-UA')}`;
 
   return (
     <Modal closeModal={handleClose}>

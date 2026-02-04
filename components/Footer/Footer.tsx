@@ -1,7 +1,5 @@
-"use client";
-
-import Link from "next/link";
-import css from "./Footer.module.css";
+import Link from 'next/link';
+import css from './Footer.module.css';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -9,18 +7,17 @@ export default function Footer() {
   return (
     <footer className={css.footer}>
       <div className={css.wrap}>
-        <p>© {year} NoteHub. All rights reserved.</p>
+        <p>© {year} NextAuthFlow. All rights reserved.</p>
 
-        <div className={css.wrap}>
+        <address className={(css.meta, css.wrap)}>
           <p>Developer: Yaroslav Krokhmalnyi</p>
-
           <p>
-            Contact us:{" "}
-            <Link className={css.link} href="mailto:krokhmalniy.code@gmail.com">
+            Contact:{' '}
+            <Link className={css.link} href='mailto:krokhmalniy.code@gmail.com'>
               krokhmalniy.code@gmail.com
             </Link>
           </p>
-        </div>
+        </address>
       </div>
     </footer>
   );

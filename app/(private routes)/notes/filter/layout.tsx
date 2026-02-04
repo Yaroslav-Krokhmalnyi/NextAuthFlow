@@ -1,5 +1,3 @@
-// app/notes/filter/layout.tsx
-
 // Styles
 import css from '@/app/(private routes)/notes/filter/LayoutNotes.module.css';
 
@@ -12,8 +10,10 @@ type NotesLayoutProps = {
 const NotesLayout = ({ children, sidebar }: NotesLayoutProps) => {
   return (
     <section className={css.container}>
-      <aside className={css.sidebar}>{sidebar}</aside>
-      <div className={css.notesWrapper}>{children}</div>
+      <aside className={css.sidebar} aria-label='Notes filters'>
+        {sidebar}
+      </aside>
+      <main className={css.notesWrapper}>{children}</main>
     </section>
   );
 };

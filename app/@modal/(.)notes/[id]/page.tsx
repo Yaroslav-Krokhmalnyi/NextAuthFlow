@@ -5,9 +5,6 @@ import {
   dehydrate,
 } from '@tanstack/react-query';
 
-// Styles
-import css from './NotePreview.module.css';
-
 // API
 import { fetchNoteById } from '@/lib/api/serverApi';
 

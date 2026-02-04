@@ -23,9 +23,12 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'NextAuthFlow',
-  description:
-    'Authentication system built with Next.js App Router. Full auth flow with protected routes, Zustand and TanStack Query.',
+  metadataBase: new URL('https://next-auth-flow-zeta.vercel.app'),
+  title: {
+    default: 'NextAuthFlow',
+    template: '%s – NextAuthFlow',
+  },
+  description: 'Authentication system built with Next.js App Router.',
   openGraph: {
     title: 'NextAuthFlow',
     description:

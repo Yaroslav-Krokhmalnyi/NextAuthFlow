@@ -1,7 +1,5 @@
-// app/@modal/default.tsx
-
 function ParallelModal() {
-    return null;
+  return null;
 }
 
 export default ParallelModal;

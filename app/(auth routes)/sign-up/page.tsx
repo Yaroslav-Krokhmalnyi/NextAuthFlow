@@ -14,31 +14,44 @@ import css from './SignUpPage.module.css';
 export default function SignUp() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
+    setError('');
+    setIsLoading(true);
+
     try {
       const formValues = Object.fromEntries(formData) as RegisterRequest;
       const res = await register(formValues);
+
       if (res) {
         setUser(res);
         router.push('/profile');
       } else {
-        setError('Invalid email or password');
+        setError('Registration failed');
       }
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError('Oops... some error');
+        setError('Something went wrong');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
-      <form className={css.form} action={handleSubmit}>
+      <form
+        className={css.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(new FormData(e.currentTarget));
+        }}
+      >
         <div className={css.formGroup}>
           <label htmlFor='email'>Email</label>
           <input
@@ -62,12 +75,21 @@ export default function SignUp() {
         </div>
 
         <div className={css.actions}>
-          <button type='submit' className={css.submitButton}>
-            Register
+          <button
+            type='submit'
+            className={css.submitButton}
+            disabled={isLoading}
+            aria-busy={isLoading}
+          >
+            {isLoading ? 'Registering…' : 'Register'}
           </button>
         </div>
 
-        {error && <p className={css.error}>{error}</p>}
+        {error && (
+          <p className={css.error} role='alert' aria-live='assertive'>
+            {error}
+          </p>
+        )}
       </form>
     </main>
   );

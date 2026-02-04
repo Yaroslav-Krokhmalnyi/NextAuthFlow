@@ -1,5 +1,3 @@
-// components/NoteList/NoteList.tsx
-
 'use client';
 
 // Styles
@@ -41,7 +39,11 @@ export default function NoteList({ notes }: NoteListProps) {
 
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
-            <Link className={css.link} href={`/notes/${note.id}`}>
+            <Link
+              className={css.link}
+              href={`/notes/${note.id}`}
+              aria-label={`View details of note "${note.title}"`}
+            >
               View details
             </Link>
 
@@ -50,6 +52,7 @@ export default function NoteList({ notes }: NoteListProps) {
               type='button'
               onClick={() => mutation.mutate(note.id)}
               disabled={mutation.isPending}
+              aria-label={`Delete note "${note.title}"`}
             >
               Delete
             </button>

@@ -1,17 +1,7 @@
-// fetchNotes;
-// fetchNoteById;
-// createNote;
-// deleteNote;
-// register;
-// login;
-// logout;
-// checkSession;
-// getMe;
-// updateMe;
-
 // API
 import { nextServer } from '@/lib/api/api';
 
+// Types
 import type { User } from '@/types/user';
 import type { Note, NoteTag, CreateNoteParams } from '@/types/note';
 
@@ -101,7 +91,7 @@ export const checkSession = async (): Promise<User | null> => {
   }
 };
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
   const { data } = await nextServer.get<User>('/users/me');
   return data;
 };

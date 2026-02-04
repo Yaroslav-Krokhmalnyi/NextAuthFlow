@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 // Zustand store
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 // Types
-import type { CreateNoteParams } from "@/types/note";
+import type { CreateNoteParams } from '@/types/note';
 
 type DraftStoreProps = {
   draft: CreateNoteParams;
@@ -14,9 +14,9 @@ type DraftStoreProps = {
 };
 
 const initialDraft: CreateNoteParams = {
-  title: "",
-  content: "",
-  tag: "Todo",
+  title: '',
+  content: '',
+  tag: 'Todo',
 };
 
 export const useDraftStore = create<DraftStoreProps>()(
@@ -27,10 +27,10 @@ export const useDraftStore = create<DraftStoreProps>()(
       clearDraft: () => set(() => ({ draft: initialDraft })),
     }),
     {
-      name: "note-draft",
+      name: 'note-draft',
       partialize: (state) => ({ draft: state.draft }),
-    },
-  ),
+    }
+  )
 );
 
 export default useDraftStore;

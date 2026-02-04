@@ -1,7 +1,5 @@
-// constants/noteTags.ts
+import type { NoteTag } from '@/types/note';
 
-import type { NoteTag } from '@/types/note'
-
-const TAGS: NoteTag[] = ["Todo", "Work", "Personal", "Meeting", "Shopping"];
+const TAGS: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
 export default TAGS;

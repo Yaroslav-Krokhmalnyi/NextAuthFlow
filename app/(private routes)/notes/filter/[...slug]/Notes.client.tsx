@@ -23,7 +23,6 @@ import { fetchNotes } from '@/lib/api/clientApi';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
-import Loading from '@/app/(private routes)/notes/filter/[...slug]/loading';
 
 // Types
 import type { NoteTag } from '@/types/note';
@@ -63,11 +62,15 @@ export default function NotesPageClient({ tag }: NotesPageClientProps) {
   };
 
   if (isLoading) {
-    return <p>Loading, please wait...</p>;
+    return (
+      <p role='status' aria-live='polite'>
+        Loading notes…
+      </p>
+    );
   }
 
   if (isError || !data) {
-    return <p>Something went wrong.</p>;
+    return <p role='alert'>Could not fetch notes.</p>;
   }
 
   return (

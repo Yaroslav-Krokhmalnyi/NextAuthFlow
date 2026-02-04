@@ -19,13 +19,18 @@ const EditProfilePage = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
   const setAuthUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const data = await getMe();
-      setUser(data);
-      setUsername(data.username);
+      try {
+        const data = await getMe();
+        setUser(data);
+        setUsername(data.username);
+      } catch {
+        setError('Could not load profile.');
+      }
     };
 
     fetchUser();
@@ -41,8 +46,16 @@ const EditProfilePage = () => {
     router.push('/profile');
   };
 
+  if (error) {
+    return <p role='alert'>{error}</p>;
+  }
+
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <p role='status' aria-live='polite'>
+        Loading profile…
+      </p>
+    );
   }
 
   return (
@@ -51,7 +64,7 @@ const EditProfilePage = () => {
         <h1 className={css.formTitle}>Edit Profile</h1>
         <Image
           src={user.avatar}
-          alt='User Avatar'
+          alt={`Avatar of ${user.username}`}
           width={120}
           height={120}
           className={css.avatar}
@@ -62,6 +75,7 @@ const EditProfilePage = () => {
             <input
               id='username'
               type='text'
+              required
               className={css.input}
               value={username}
               onChange={(e) => setUsername(e.target.value)}

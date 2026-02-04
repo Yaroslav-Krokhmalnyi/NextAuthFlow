@@ -1,10 +1,8 @@
-// components/TanStackProvider/TanStackProvider.tsx
-
-"use client";
+'use client';
 
 // React components
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
 
 // Types
 interface TanStackProviderProps {
@@ -18,6 +16,3 @@ export default function TanStackProvider({ children }: TanStackProviderProps) {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
-
-
-

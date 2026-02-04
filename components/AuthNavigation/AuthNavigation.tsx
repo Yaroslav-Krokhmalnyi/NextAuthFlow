@@ -20,22 +20,30 @@ export default function AuthNavigation() {
   );
 
   const handleLogout = async () => {
-    await logout();
-    clearIsAuthenticated();
-    router.push('/sign-in');
+    try {
+      await logout();
+    } finally {
+      clearIsAuthenticated();
+      router.push('/sign-in');
+    }
   };
 
   return isAuthenticated ? (
     <>
       <li className={css.navigationItem}>
-        <Link href='/profile' prefetch={false} className={css.navigationLink}>
+        <Link href='/profile' className={css.navigationLink}>
           Profile
         </Link>
       </li>
 
       <li className={css.navigationItem}>
-        <p className={css.userEmail}>{user?.email}</p>
-        <button className={css.logoutButton} onClick={handleLogout}>
+        <span className={css.userEmail}>Signed in as {user?.username}</span>
+        <button
+          type='button'
+          className={css.logoutButton}
+          onClick={handleLogout}
+          aria-label='Log out of your account'
+        >
           Logout
         </button>
       </li>
@@ -49,7 +57,7 @@ export default function AuthNavigation() {
       </li>
 
       <li className={css.navigationItem}>
-        <Link href='/sign-up' prefetch={false} className={css.navigationLink}>
+        <Link href='/sign-up' className={css.navigationLink}>
           Sign up
         </Link>
       </li>

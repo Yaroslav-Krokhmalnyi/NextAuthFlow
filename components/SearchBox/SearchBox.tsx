@@ -1,9 +1,7 @@
-// components/SearchBox/SearchBox.tsx
-
-"use client";
+'use client';
 
 // Styles
-import css from "./SearchBox.module.css";
+import css from './SearchBox.module.css';
 
 // Types
 interface SearchBoxProps {
@@ -15,10 +13,11 @@ export default function SearchBox({ value, onChange }: SearchBoxProps) {
   return (
     <input
       className={css.input}
-      type="text"
+      type='search'
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Search notes..."
+      placeholder='Search notes...'
+      aria-label='Search notes'
     />
   );
 }

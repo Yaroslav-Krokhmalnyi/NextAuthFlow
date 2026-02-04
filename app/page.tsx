@@ -1,25 +1,29 @@
-// app/page.tsx
-
 // Styles
-import css from "./Home.module.css";
+import css from './Home.module.css';
 
 export default function HomePage() {
   return (
     <main className={css.main}>
-  <div className={css.container}>
-    <h1 className={css.title}>Welcome to NoteHub</h1>
-    <p className={css.description}>
-      NoteHub is a simple and efficient application designed for managing
-      personal notes. It helps keep your thoughts organized and accessible
-      in one place, whether you are at home or on the go.
-    </p>
-    <p className={css.description}>
-      The app provides a clean interface for writing, editing, and browsing
-      notes. With support for keyword search and structured organization,
-      NoteHub offers a streamlined experience for anyone who values clarity
-      and productivity.
-    </p>
-  </div>
-</main>
+      <div className={css.container}>
+        <h1 className={css.title}>NextAuthFlow</h1>
+
+        <p className={css.description}>
+          NextAuthFlow is a modern authentication system built with Next.js App
+          Router.
+        </p>
+
+        <p className={css.description}>
+          This project demonstrates a complete authentication flow including
+          registration, login, logout, session validation, and protected routes.
+          It focuses on real-world authentication patterns such as cookie-based
+          sessions, SSR/CSR interaction, and scalable state management.
+        </p>
+
+        <p className={css.description}>
+          Tech stack: Next.js (App Router), TypeScript, TanStack Query, Zustand,
+          REST API, cookie-based authentication.
+        </p>
+      </div>
+    </main>
   );
 }

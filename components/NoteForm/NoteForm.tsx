@@ -1,5 +1,6 @@
 'use client';
 
+// Liberys
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -113,8 +114,13 @@ export default function NoteForm({ categories }: NoteFormProps) {
           className={css.input}
           defaultValue={title}
           onChange={handleChange}
+          required
         />
-        <span className={css.error}>{errors.title}</span>
+        {errors.title && (
+          <span className={css.error} role='alert'>
+            {errors.title}
+          </span>
+        )}
       </div>
 
       <div className={css.formGroup}>
@@ -126,8 +132,13 @@ export default function NoteForm({ categories }: NoteFormProps) {
           className={css.textarea}
           defaultValue={content}
           onChange={handleChange}
+          required
         />
-        <span className={css.error}>{errors.content}</span>
+        {errors.title && (
+          <span className={css.error} role='alert'>
+            {errors.content}
+          </span>
+        )}
       </div>
 
       <div className={css.formGroup}>
@@ -145,7 +156,11 @@ export default function NoteForm({ categories }: NoteFormProps) {
             </option>
           ))}
         </select>
-        <span className={css.error}>{errors.tag}</span>
+        {errors.title && (
+          <span className={css.error} role='alert'>
+            {errors.tag}
+          </span>
+        )}
       </div>
 
       <div className={css.actions}>

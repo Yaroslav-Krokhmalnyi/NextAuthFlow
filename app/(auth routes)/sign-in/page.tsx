@@ -14,12 +14,17 @@ import css from './SignInPage.module.css';
 const SignIn = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
+    setError('');
+    setIsLoading(true);
+
     try {
       const formValues = Object.fromEntries(formData) as LoginRequest;
       const res = await login(formValues);
+
       if (res) {
         setUser(res);
         router.push('/profile');
@@ -30,14 +35,22 @@ const SignIn = () => {
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError('Oops... some error');
+        setError('Something went wrong');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <main className={css.mainContent}>
-      <form className={css.form} action={handleSubmit}>
+      <form
+        className={css.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(new FormData(e.currentTarget));
+        }}
+      >
         <h1 className={css.formTitle}>Sign in</h1>
 
         <div className={css.formGroup}>
@@ -63,12 +76,21 @@ const SignIn = () => {
         </div>
 
         <div className={css.actions}>
-          <button type='submit' className={css.submitButton}>
-            Log in
+          <button
+            type='submit'
+            className={css.submitButton}
+            disabled={isLoading}
+            aria-busy={isLoading}
+          >
+            {isLoading ? 'Logging in…' : 'Log in'}
           </button>
         </div>
 
-        {error && <p className={css.error}>{error}</p>}
+        {error && (
+          <p className={css.error} role='alert' aria-live='assertive'>
+            {error}
+          </p>
+        )}
       </form>
     </main>
   );
