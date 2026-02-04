@@ -134,7 +134,7 @@ export default function NoteForm({ categories }: NoteFormProps) {
           onChange={handleChange}
           required
         />
-        {errors.title && (
+        {errors.content && (
           <span className={css.error} role='alert'>
             {errors.content}
           </span>
@@ -156,7 +156,7 @@ export default function NoteForm({ categories }: NoteFormProps) {
             </option>
           ))}
         </select>
-        {errors.title && (
+        {errors.tag && (
           <span className={css.error} role='alert'>
             {errors.tag}
           </span>

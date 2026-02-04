@@ -24,27 +24,34 @@ type NoteDetailsPageProps = {
 export async function generateMetadata({
   params,
 }: NoteDetailsPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const note = await fetchNoteById(id);
+  try {
+    const { id } = await params;
+    const note = await fetchNoteById(id);
 
-  return {
-    title: `Note: ${note.title}`,
-    description: note.content.slice(0, 30),
-    openGraph: {
-      title: note.title,
+    return {
+      title: `Note: ${note.title}`,
       description: note.content.slice(0, 30),
-      url: `https://08-zustand-drab-kappa.vercel.app/notes/${id}`,
-      images: [
-        {
-          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-          width: 1200,
-          height: 630,
-          alt: 'NoteHub — a simple web-based note-taking application built with Next.js',
-        },
-      ],
-      type: 'website',
-    },
-  };
+      openGraph: {
+        title: note.title,
+        description: note.content.slice(0, 30),
+        url: `https://next-auth-flow-zeta.vercel.app/notes/${id}`,
+        images: [
+          {
+            url: '/og.png',
+            width: 1200,
+            height: 630,
+            alt: 'NoteHub — a simple web-based note-taking application built with Next.js',
+          },
+        ],
+        type: 'website',
+      },
+    };
+  } catch {
+    return {
+      title: 'Note not found',
+      description: 'The requested note does not exist.',
+    };
+  }
 }
 
 export default async function NoteDetailsPage({
