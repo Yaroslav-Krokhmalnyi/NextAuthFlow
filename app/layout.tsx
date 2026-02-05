@@ -8,6 +8,7 @@ import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import { getServerUser } from '@/lib/api/serverApi';
 
 //Styles
 import './globals.css';
@@ -53,18 +54,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   modal,
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
+  const user = await getServerUser();
+
   return (
     <html lang='en'>
       <body className={roboto.variable}>
         <TanStackProvider>
-          <AuthProvider>
+          <AuthProvider initialUser={user}>
             <Header />
             {children}
             {modal}
