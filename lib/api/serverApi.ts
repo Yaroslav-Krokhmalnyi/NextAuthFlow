@@ -1,8 +1,3 @@
-// fetchNotes
-// fetchNoteById
-// getMe
-// checkSession.
-
 // Cookies
 import { cookies } from 'next/headers';
 
