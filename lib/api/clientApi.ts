@@ -82,12 +82,12 @@ type CheckSessionRequest = {
   success: boolean;
 };
 
-export const checkSession = async (): Promise<User | null> => {
+export const checkSession = async (): Promise<boolean> => {
   try {
-    const { data } = await nextServer.get<User>('/auth/session');
-    return data ?? null;
+    const { data } = await nextServer.get<CheckSessionRequest>('/auth/session');
+    return data?.success === true;
   } catch {
-    return null;
+    return false;
   }
 };
 
