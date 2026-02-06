@@ -5,6 +5,7 @@ import css from './NoteList.module.css';
 
 // React components
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 // Next.js components
 import Link from 'next/link';
@@ -19,6 +20,9 @@ import type { Note } from '@/types/note';
 // Toast
 import { toastSuccess, toastError } from '@/lib/toast';
 
+// Components
+import Loader from '@/components/Loader/Loader';
+
 interface NoteListProps {
   notes: Note[];
 }
@@ -26,6 +30,7 @@ interface NoteListProps {
 export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: (id: string) => deleteNote(id),
@@ -53,7 +58,11 @@ export default function NoteList({ notes }: NoteListProps) {
 
     if (!confirmed) return;
 
-    mutation.mutate(id);
+    setDeletingId(id);
+
+    mutation.mutate(id, {
+      onSettled: () => setDeletingId(null),
+    });
   };
 
   return (
@@ -80,11 +89,15 @@ export default function NoteList({ notes }: NoteListProps) {
               className={css.button}
               type='button'
               onClick={() => handleDelete(note.id, note.title)}
-              disabled={mutation.isPending}
+              disabled={mutation.isPending && deletingId === note.id}
               aria-busy={mutation.isPending}
               aria-label={`Delete note "${note.title}"`}
             >
-              {mutation.isPending ? 'Deleting…' : 'Delete'}
+              {mutation.isPending && deletingId === note.id ? (
+                <Loader size={16} />
+              ) : (
+                'Delete'
+              )}
             </button>
           </div>
         </li>
