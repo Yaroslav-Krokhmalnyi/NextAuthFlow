@@ -83,12 +83,8 @@ type CheckSessionRequest = {
 };
 
 export const checkSession = async (): Promise<User | null> => {
-  try {
-    const { data } = await nextServer.get<User>('/auth/session');
-    return data ?? null;
-  } catch {
-    return null;
-  }
+  const { data } = await nextServer.get<User>('/auth/session');
+  return data ?? null;
 };
 
 export const getMe = async (): Promise<User> => {

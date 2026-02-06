@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as Yup from 'yup';
 
+// Toasts
+import { toastSuccess, toastError } from '@/lib/toast';
+
 // API
 import { createNote } from '@/lib/api/clientApi';
 
@@ -65,12 +68,28 @@ export default function NoteForm({ categories }: NoteFormProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createNote,
-    onSuccess: () => {
+
+    onSuccess: async () => {
+      await toastSuccess({ message: 'Note created successfully' });
+
       queryClient.invalidateQueries({
         queryKey: ['notes'],
       });
+
       clearDraft();
       router.push('/notes/filter/all');
+    },
+
+    onError: async (error: any) => {
+      if (error?.response?.status === 401) {
+        router.replace('/sign-in');
+        return;
+      }
+
+      await toastError({
+        message:
+          error instanceof Error ? error.message : 'Failed to create note',
+      });
     },
   });
 
@@ -88,11 +107,11 @@ export default function NoteForm({ categories }: NoteFormProps) {
 
       setErrors({});
       mutate(payload);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
         const validationErrors: Record<string, string> = {};
 
-        err.inner.forEach((error) => {
+        error.inner.forEach((error) => {
           if (error.path) {
             validationErrors[error.path] = error.message;
           }

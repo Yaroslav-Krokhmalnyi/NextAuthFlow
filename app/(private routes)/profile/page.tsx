@@ -4,6 +4,7 @@ import css from './ProfilePage.module.css';
 // Liberis
 import Link from 'next/link';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 
 // Meta
 import { Metadata } from 'next';
@@ -31,7 +32,16 @@ export const metadata: Metadata = {
 };
 
 export default async function Profile() {
-  const user = await getMe();
+  let user;
+
+  try {
+    user = await getMe();
+  } catch (error: any) {
+    if (error?.response?.status === 401) {
+      redirect('/sign-in');
+    }
+    throw error;
+  }
 
   return (
     <main className={css.mainContent}>

@@ -8,35 +8,42 @@ import { register, RegisterRequest } from '@/lib/api/clientApi';
 // Components
 import { useAuthStore } from '@/lib/store/authStore';
 
+// Toast
+import { toastSuccess, toastError } from '@/lib/toast';
+
 // Styles
 import css from './SignUpPage.module.css';
 
 export default function SignUp() {
   const router = useRouter();
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const setUser = useAuthStore((state) => state.setUser);
+  // const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
-    setError('');
+    if (isLoading) return;
     setIsLoading(true);
 
     try {
       const formValues = Object.fromEntries(formData) as RegisterRequest;
       const res = await register(formValues);
 
-      if (res) {
-        setUser(res);
-        router.push('/profile');
-      } else {
-        setError('Registration failed');
+      if (!res) {
+        await toastError({ message: 'Registration failed. Please try again.' });
+        return;
       }
+
+      await toastSuccess({
+        message: 'Account created successfully. You can sign in now.',
+      });
+
+      router.push('/sign-in');
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError('Something went wrong');
-      }
+      await toastError({
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Server error. Please try again later.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -84,12 +91,6 @@ export default function SignUp() {
             {isLoading ? 'Registering…' : 'Register'}
           </button>
         </div>
-
-        {error && (
-          <p className={css.error} role='alert' aria-live='assertive'>
-            {error}
-          </p>
-        )}
       </form>
     </main>
   );

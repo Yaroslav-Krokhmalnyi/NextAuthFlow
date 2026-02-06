@@ -12,6 +12,7 @@ import { getServerUser } from '@/lib/api/serverApi';
 
 //Styles
 import './globals.css';
+import 'izitoast/dist/css/iziToast.min.css';
 
 // Fonts
 import { Roboto } from 'next/font/google';
