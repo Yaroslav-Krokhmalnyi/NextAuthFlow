@@ -23,6 +23,7 @@ import { fetchNotes } from '@/lib/api/clientApi';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
+import Loader from '@/components/Loader/Loader';
 
 // Types
 import type { NoteTag } from '@/types/note';
@@ -41,7 +42,7 @@ export default function NotesPageClient({ tag }: NotesPageClientProps) {
 
   const router = useRouter();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isFetching, isError } = useQuery({
     queryKey: [
       'notes',
       { page, perPage: PER_PAGE, tag, search: debouncedSearch },
@@ -62,11 +63,7 @@ export default function NotesPageClient({ tag }: NotesPageClientProps) {
   };
 
   if (isLoading) {
-    return (
-      <p role='status' aria-live='polite'>
-        Loading notes…
-      </p>
-    );
+    return <Loader center />;
   }
 
   if (isError || !data) {
@@ -94,6 +91,12 @@ export default function NotesPageClient({ tag }: NotesPageClientProps) {
           Add note +
         </button>
       </div>
+
+      {isFetching && (
+        <div style={{ marginBottom: 16 }}>
+          <Loader size={32} />
+        </div>
+      )}
 
       {data.notes.length > 0 ? (
         <NoteList notes={data.notes} />

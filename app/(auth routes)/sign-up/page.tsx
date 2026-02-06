@@ -7,6 +7,7 @@ import { register, RegisterRequest } from '@/lib/api/clientApi';
 
 // Components
 import { useAuthStore } from '@/lib/store/authStore';
+import Loader from '@/components/Loader/Loader';
 
 // Toast
 import { toastSuccess, toastError } from '@/lib/toast';
@@ -88,7 +89,7 @@ export default function SignUp() {
             disabled={isLoading}
             aria-busy={isLoading}
           >
-            {isLoading ? 'Registering…' : 'Register'}
+            {isLoading ? <Loader size={20} /> : 'Register'}
           </button>
         </div>
       </form>

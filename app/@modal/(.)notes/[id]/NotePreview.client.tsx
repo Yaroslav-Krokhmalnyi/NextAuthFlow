@@ -13,6 +13,7 @@ import { fetchNoteById } from '@/lib/api/clientApi';
 
 //Components
 import Modal from '@/components/Modal/Modal';
+import Loader from '@/components/Loader/Loader';
 
 const NotePreviewClient = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,36 +30,36 @@ const NotePreviewClient = () => {
     refetchOnMount: false,
   });
 
-  if (isLoading) {
-    return (
-      <p role='status' aria-live='polite'>
-        Loading note…
-      </p>
-    );
-  }
-
-  if (error instanceof Error || !note) {
-    return <p role='alert'>Could not load note.</p>;
-  }
-
-  const formattedDate = note.updatedAt
+  const formattedDate = note?.updatedAt
     ? `Updated at: ${new Date(note.updatedAt).toLocaleDateString('uk-UA')}`
-    : `Created at: ${new Date(note.createdAt).toLocaleDateString('uk-UA')}`;
+    : note
+      ? `Created at: ${new Date(note.createdAt).toLocaleDateString('uk-UA')}`
+      : null;
 
   return (
     <Modal closeModal={handleClose}>
       <div className={css.container}>
-        <div className={css.item}>
-          <div className={css.header}>
-            <h2>{note.title}</h2>
-            <p className={css.tag}>{note.tag}</p>
-          </div>
-          <p className={css.content}>{note.content}</p>
-          <p className={css.date}>{formattedDate}</p>
-        </div>
-        <button type='button' className={css.backBtn} onClick={handleClose}>
-          Back
-        </button>
+        {isLoading && <Loader label='Loading note preview' />}
+
+        {!isLoading && error instanceof Error && (
+          <p role='alert'>Could not load note.</p>
+        )}
+
+        {!isLoading && note && (
+          <>
+            <div className={css.item}>
+              <div className={css.header}>
+                <h2>{note.title}</h2>
+                <p className={css.tag}>{note.tag}</p>
+              </div>
+              <p className={css.content}>{note.content}</p>
+              {formattedDate && <p className={css.date}>{formattedDate}</p>}
+            </div>
+            <button type='button' className={css.backBtn} onClick={handleClose}>
+              Back
+            </button>
+          </>
+        )}
       </div>
     </Modal>
   );

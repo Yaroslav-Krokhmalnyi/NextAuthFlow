@@ -7,6 +7,7 @@ import Image from 'next/image';
 
 // Components
 import { useAuthStore } from '@/lib/store/authStore';
+import Loader from '@/components/Loader/Loader';
 
 // API
 import { getMe, updateMe } from '@/lib/api/clientApi';
@@ -72,11 +73,7 @@ const EditProfilePage = () => {
   };
 
   if (!user) {
-    return (
-      <p role='status' aria-live='polite'>
-        Loading profile…
-      </p>
-    );
+    return <Loader center />;
   }
 
   return (
@@ -106,8 +103,13 @@ const EditProfilePage = () => {
           <p>Email: {user.email}</p>
 
           <div className={css.actions}>
-            <button type='submit' className={css.saveButton}>
-              Save
+            <button
+              type='submit'
+              className={css.saveButton}
+              disabled={isLoading}
+              aria-busy={isLoading}
+            >
+              {isLoading ? <Loader size={20} /> : 'Save'}
             </button>
             <button
               type='button'

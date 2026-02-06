@@ -1,10 +1,18 @@
 'use client';
 
+// Libraries
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+
+// API
 import { fetchNoteById } from '@/lib/api/clientApi';
+
+// Styles
 import css from './NoteDetails.module.css';
+
+// Components
+import Loader from '@/components/Loader/Loader';
 
 export default function NoteDetailsClient() {
   const router = useRouter();
@@ -22,11 +30,7 @@ export default function NoteDetailsClient() {
   });
 
   if (isLoading) {
-    return (
-      <p role='status' aria-live='polite'>
-        Loading note…
-      </p>
-    );
+    return <Loader center label='Loading note' />;
   }
 
   if (isError || !note) {
