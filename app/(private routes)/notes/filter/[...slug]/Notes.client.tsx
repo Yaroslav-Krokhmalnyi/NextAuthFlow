@@ -80,6 +80,7 @@ export default function NotesPageClient({ tag }: NotesPageClientProps) {
             page={page}
             totalPages={data.totalPages}
             onPageChange={setPage}
+            isLoading={isFetching}
           />
         )}
 
@@ -91,12 +92,6 @@ export default function NotesPageClient({ tag }: NotesPageClientProps) {
           Add note +
         </button>
       </div>
-
-      {isFetching && (
-        <div style={{ marginBottom: 16 }}>
-          <Loader size={32} />
-        </div>
-      )}
 
       {data.notes.length > 0 ? (
         <NoteList notes={data.notes} />

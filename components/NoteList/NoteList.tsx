@@ -90,7 +90,7 @@ export default function NoteList({ notes }: NoteListProps) {
               type='button'
               onClick={() => handleDelete(note.id, note.title)}
               disabled={mutation.isPending && deletingId === note.id}
-              aria-busy={mutation.isPending}
+              aria-busy={mutation.isPending && deletingId === note.id}
               aria-label={`Delete note "${note.title}"`}
             >
               {mutation.isPending && deletingId === note.id ? (
