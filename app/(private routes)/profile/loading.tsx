@@ -1,7 +1,5 @@
+import Loader from '@/components/Loader/Loader';
+
 export default function Loading() {
-  return (
-    <main role='status' aria-live='polite'>
-      <p>Loading profile…</p>
-    </main>
-  );
+  return <Loader center />;
 }

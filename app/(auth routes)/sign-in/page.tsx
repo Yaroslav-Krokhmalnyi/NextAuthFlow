@@ -8,6 +8,7 @@ import { login, LoginRequest } from '@/lib/api/clientApi';
 // Components
 import { useAuthStore } from '@/lib/store/authStore';
 import { toastSuccess, toastError } from '@/lib/toast';
+import Loader from '@/components/Loader/Loader';
 
 // Styles
 import css from './SignInPage.module.css';
@@ -18,6 +19,7 @@ const SignIn = () => {
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
+    if (isLoading) return;
     setIsLoading(true);
 
     try {
@@ -85,7 +87,7 @@ const SignIn = () => {
             disabled={isLoading}
             aria-busy={isLoading}
           >
-            {isLoading ? 'Logging in…' : 'Log in'}
+            {isLoading ? <Loader size={20} /> : 'Log in'}
           </button>
         </div>
       </form>
