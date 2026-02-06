@@ -21,6 +21,9 @@ import css from './NoteForm.module.css';
 // Types
 import type { CreateNoteParams, NoteTag } from '@/types/note';
 
+// Components
+import Loader from '@/components/Loader/Loader';
+
 interface NoteFormProps {
   categories: NoteTag[];
 }
@@ -193,8 +196,13 @@ export default function NoteForm({ categories }: NoteFormProps) {
           Cancel
         </button>
 
-        <button type='submit' className={css.submitButton} disabled={isPending}>
-          {isPending ? 'Creating...' : 'Create note'}
+        <button
+          type='submit'
+          className={css.submitButton}
+          disabled={isPending}
+          aria-busy={isPending}
+        >
+          {isPending ? <Loader size={20} /> : 'Create note'}
         </button>
       </div>
     </form>
