@@ -14,14 +14,12 @@ type ModalProps = {
 };
 
 const Modal = ({ children, closeModal }: ModalProps) => {
-  // Сlose when clicking on backdrop
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       closeModal();
     }
   };
 
-  // Close when clicking on esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

@@ -1,9 +1,11 @@
 'use client';
 
+// Library
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+// Components
 import { useAuthStore } from '@/lib/store/authStore';
 
 // API
@@ -15,12 +17,15 @@ import css from './EditProfilePage.module.css';
 // Types
 import type { User } from '@/types/user';
 
+// Toast
+import { toastSuccess, toastError } from '@/lib/toast';
+
 const EditProfilePage = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
   const setAuthUser = useAuthStore((state) => state.setUser);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,27 +33,43 @@ const EditProfilePage = () => {
         const data = await getMe();
         setUser(data);
         setUsername(data.username);
-      } catch {
-        setError('Could not load profile.');
+      } catch (error: any) {
+        if (error?.response?.status === 401) {
+          router.replace('/sign-in');
+          return;
+        }
+
+        await toastError({ message: 'Could not load profile' });
       }
     };
 
     fetchUser();
-  }, []);
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
+    setIsLoading(true);
 
-    const updatedUser = await updateMe({ username });
+    try {
+      const updatedUser = await updateMe({ username });
+      setAuthUser(updatedUser);
+      await toastSuccess({ message: 'Profile updated successfully' });
+      router.push('/profile');
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        router.replace('/sign-in');
+        return;
+      }
 
-    setAuthUser(updatedUser);
-
-    router.push('/profile');
+      await toastError({
+        message:
+          error instanceof Error ? error.message : 'Failed to update profile',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  if (error) {
-    return <p role='alert'>{error}</p>;
-  }
 
   if (!user) {
     return (
@@ -92,6 +113,7 @@ const EditProfilePage = () => {
               type='button'
               className={css.cancelButton}
               onClick={() => router.push('/profile')}
+              disabled={isLoading}
             >
               Cancel
             </button>

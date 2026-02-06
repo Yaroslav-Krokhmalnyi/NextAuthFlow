@@ -7,36 +7,39 @@ import { login, LoginRequest } from '@/lib/api/clientApi';
 
 // Components
 import { useAuthStore } from '@/lib/store/authStore';
+import { toastSuccess, toastError } from '@/lib/toast';
 
 // Styles
 import css from './SignInPage.module.css';
 
 const SignIn = () => {
   const router = useRouter();
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
-    setError('');
     setIsLoading(true);
 
     try {
       const formValues = Object.fromEntries(formData) as LoginRequest;
       const res = await login(formValues);
 
-      if (res) {
-        setUser(res);
-        router.push('/profile');
-      } else {
-        setError('Invalid email or password');
+      if (!res) {
+        toastError({ message: 'Invalid email or password' });
+        return;
       }
+
+      setUser(res);
+      toastSuccess({ message: 'Welcome back!' });
+
+      router.push('/profile');
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError('Something went wrong');
-      }
+      toastError({
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Server error. Please try again later.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -85,12 +88,6 @@ const SignIn = () => {
             {isLoading ? 'Logging in…' : 'Log in'}
           </button>
         </div>
-
-        {error && (
-          <p className={css.error} role='alert' aria-live='assertive'>
-            {error}
-          </p>
-        )}
       </form>
     </main>
   );
