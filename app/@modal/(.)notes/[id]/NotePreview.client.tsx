@@ -39,7 +39,7 @@ const NotePreviewClient = () => {
   return (
     <Modal closeModal={handleClose}>
       <div className={css.container}>
-        {isLoading && <Loader label='Loading note preview' />}
+        {isLoading && <Loader />}
 
         {!isLoading && error instanceof Error && (
           <p role='alert'>Could not load note.</p>
