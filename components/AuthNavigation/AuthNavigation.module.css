@@ -5,6 +5,13 @@
 }
 
 .logoutButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 70px;
+  height: 28px;
+
   background: transparent;
   border: 1px solid white;
   color: white;
@@ -12,9 +19,15 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
+
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+}
+
+.logoutButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .logoutButton:hover {

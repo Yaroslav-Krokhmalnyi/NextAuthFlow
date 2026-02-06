@@ -14,7 +14,9 @@
   cursor: pointer;
   min-width: 36px;
   height: 36px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .pagination li a {
@@ -44,4 +46,28 @@
 .active a {
   color: #fff !important;
   font-weight: 500;
+}
+
+nav[data-loading='true'] .pagination li.active a {
+  color: transparent;
+  pointer-events: none;
+  position: relative;
+}
+
+nav[data-loading='true'] .pagination li.active a::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: pagination-spin 0.8s linear infinite;
+
+  position: absolute;
+}
+
+@keyframes pagination-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 // Components
 import { useAuthStore } from '@/lib/store/authStore';
+import Loader from '@/components/Loader/Loader';
 
 // API
 import { logout } from '@/lib/api/clientApi';
@@ -81,9 +82,11 @@ export default function AuthNavigation() {
           type='button'
           className={css.logoutButton}
           onClick={handleLogout}
+          disabled={isLoading}
+          aria-busy={isLoading}
           aria-label='Log out of your account'
         >
-          Logout
+          {isLoading ? <Loader size={16} /> : 'Logout'}
         </button>
       </li>
     </>
