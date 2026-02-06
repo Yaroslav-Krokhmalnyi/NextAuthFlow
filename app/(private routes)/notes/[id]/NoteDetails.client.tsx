@@ -30,7 +30,7 @@ export default function NoteDetailsClient() {
   });
 
   if (isLoading) {
-    return <Loader center label='Loading note' />;
+    return <Loader center />;
   }
 
   if (isError || !note) {
