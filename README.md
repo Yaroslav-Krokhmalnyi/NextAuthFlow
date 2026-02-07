@@ -14,7 +14,7 @@ https://next-auth-flow-zeta.vercel.app/
 ## 🚧 Project Status
 
 **In progress**  
-This project is actively being developed and improved as a portfolio and educational application.
+This project is actively being developed and improved as a portfolio-grade application.
 
 ---
 
